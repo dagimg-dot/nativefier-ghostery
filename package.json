@@ -1,56 +1,41 @@
 {
-  "name": "nativefier-ghostery",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Builds a Nativefier app with Ghostery adblocker injected.",
-  "main": "src/index.js",
-  "bin": {
-    "nativefier-ghostery": "bin/nativefier-ghostery.js"
-  },
-  "scripts": {
-    "start": "nativefier-ghostery",
-    "test": "jest",
-    "lint": "eslint 'src/**/*.js'",
-    "format": "prettier --write 'src/**/*.js'"
-  },
-  "files": [
-    "bin/",
-    "src/"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/YOUR_USERNAME/nativefier-ghostery.git"
-  },
-  "keywords": [
-    "nativefier",
-    "electron",
-    "adblocker",
-    "ghostery",
-    "wrapper"
-  ],
-  "author": "Your Name <your.email@example.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/nativefier-ghostery/issues"
-  },
-  "homepage": "https://github.com/YOUR_USERNAME/nativefier-ghostery#readme",
-  "dependencies": {
-    "cross-fetch": "^4.0.0",
-    "@ghostery/adblocker-electron": "^1.10.2",
-    "fs-extra": "^11.2.0",
-    "nativefier": "^52.1.1",
-    "commander": "^10.0.0"
-  },
-  "devDependencies": {
-    "jest": "^29.0.0",
-    "eslint": "^8.0.0",
-    "prettier": "^2.0.0",
-    "eslint-plugin-prettier": "^5.0.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "jest": {
-    "testEnvironment": "node"
-  }
+	"name": "nativefier-ghostery",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Builds a Nativefier app with Ghostery adblocker injected.",
+	"main": "src/index.js",
+	"bin": {
+		"nativefier-ghostery": "bin/nativefier-ghostery.js"
+	},
+	"scripts": {
+		"build": "node bin/nativefier-ghostery.js",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write --unsafe .",
+		"format": "biome format --write ."
+	},
+	"files": ["bin/", "src/"],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/dagimg-dot/nativefier-ghostery.git"
+	},
+	"keywords": ["nativefier", "electron", "adblocker", "ghostery", "wrapper"],
+	"author": "Dagim G. Astatkie <dagim.astatkie@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/dagimg-dot/nativefier-ghostery/issues"
+	},
+	"homepage": "https://github.com/dagimg-dot/nativefier-ghostery#readme",
+	"dependencies": {
+		"@ghostery/adblocker-electron": "^2.5.2",
+		"commander": "^13.1.0",
+		"cross-fetch": "^4.1.0",
+		"fs-extra": "^11.3.0",
+		"nativefier": "52.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	}
 }

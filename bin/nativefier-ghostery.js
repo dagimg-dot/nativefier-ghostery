@@ -4,4 +4,4 @@
 // It simply imports and runs the command-line interface logic
 // defined in src/cli.js.
 
-import '../src/cli.js'; 
+import "../src/cli.js";

@@ -1,20 +1,18 @@
-import fs from 'fs-extra';
-import path from 'node:path';
+import path from "node:path";
+import fs from "fs-extra";
 
 /**
  * List of modules that need to be copied to the built app
  */
 const MODULES_TO_COPY = [
-  '@ghostery', // Copy the whole scope
-  'cross-fetch',
-  'tldts-experimental',
-  '@remusao',
-  'node-fetch',
-  'whatwg-url',
-  'webidl-conversions',
-  'tr46',
-  // Add any other direct dependencies of the injection code if needed
-  // fs-extra will copy their sub-dependencies automatically
+	"@ghostery", // Copy the whole scope
+	"cross-fetch",
+	"tldts-experimental",
+	"@remusao",
+	"node-fetch",
+	"whatwg-url",
+	"webidl-conversions",
+	"tr46",
 ];
 
 /**
@@ -26,37 +24,46 @@ const MODULES_TO_COPY = [
  * @throws {Error} Throws an error if copying fails.
  */
 export async function copyRequiredModules(currentDir, appPath) {
-  console.log("[Copy] Copying required node_modules to app...");
+	console.log("[Copy] Copying required node_modules to app...");
 
-  const sourceNodeModules = path.join(currentDir, "node_modules");
-  // Destination needs to be inside the unpacked application resources
-  const destNodeModules = path.join(appPath, "resources", "app", "node_modules");
+	const sourceNodeModules = path.join(currentDir, "..", "node_modules");
+	const destNodeModules = path.join(
+		appPath,
+		"resources",
+		"app",
+		"node_modules",
+	);
 
-  try {
-    await fs.ensureDir(destNodeModules); // Ensure the target directory exists
+	console.log(`[Copy Debug] Source node_modules path: ${sourceNodeModules}`);
+	console.log(`[Copy Debug] Destination node_modules path: ${destNodeModules}`);
 
-    for (const moduleName of MODULES_TO_COPY) {
-      const sourcePath = path.join(sourceNodeModules, moduleName);
-      const destPath = path.join(destNodeModules, moduleName);
+	try {
+		await fs.ensureDir(destNodeModules);
 
-      if (await fs.pathExists(sourcePath)) {
-        // Check if module exists in source before attempting copy
-        console.log(`[Copy] Copying ${moduleName}...`);
-        await fs.copy(sourcePath, destPath, { overwrite: true });
-      } else {
-        // Log a warning if a module listed isn't found in the source.
-        // This might happen if dependencies change or 'npm install' wasn't run correctly.
-        console.warn(
-          `[Copy] Warning: Module ${moduleName} not found in ${sourceNodeModules}. Skipping copy.`
-        );
-      }
-    }
+		for (const moduleName of MODULES_TO_COPY) {
+			const sourcePath = path.join(sourceNodeModules, moduleName);
+			const destPath = path.join(destNodeModules, moduleName);
 
-    console.log("[Copy] Finished copying node_modules.");
-  } catch (copyError) {
-    // Log the specific error encountered during the copy process.
-    console.error("[Copy] Error copying node_modules:", copyError);
-    // Re-throw the error to ensure the build process knows it failed.
-    throw copyError;
-  }
+			if (moduleName.includes("ghostery")) {
+				console.log(`[Copy Debug @ghostery] Source Path: ${sourcePath}`);
+				console.log(`[Copy Debug @ghostery] Dest Path: ${destPath}`);
+				const exists = await fs.pathExists(sourcePath);
+				console.log(`[Copy Debug @ghostery] Source exists? ${exists}`);
+			}
+
+			if (await fs.pathExists(sourcePath)) {
+				console.log(`[Copy] Copying ${moduleName}...`);
+				await fs.copy(sourcePath, destPath, { overwrite: true });
+			} else {
+				console.warn(
+					`[Copy] Warning: Module ${moduleName} not found in ${sourceNodeModules}. Skipping copy.`,
+				);
+			}
+		}
+
+		console.log("[Copy] Finished copying node_modules.");
+	} catch (copyError) {
+		console.error("[Copy] Error copying node_modules:", copyError);
+		throw copyError;
+	}
 }
